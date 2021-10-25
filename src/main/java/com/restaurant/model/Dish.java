@@ -1,5 +1,6 @@
 package com.restaurant.model;
 
+import com.restaurant.enums.Category;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -9,10 +10,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @Entity
-@NoArgsConstructor
-@Table(name = "DISHES")
+@Table(name = "MENU")
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +19,14 @@ public class Dish {
     @Column(name = "NAME")
     private String name;
     @Column(name = "CATEGORY")
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Category category;
     @Column(name = "PRICE")
     private Double price;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @Override
     public boolean equals(Object o) {
