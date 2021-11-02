@@ -5,11 +5,12 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
+//@ToString
 @Entity
 @Table(name = "MENU")
 public class Dish {
@@ -24,9 +25,10 @@ public class Dish {
     @Column(name = "PRICE")
     private Double price;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @ManyToMany
+    @JoinTable(name = "menu_orders",
+            joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "order_id"))
+    private List<Order> order;
 
     @Override
     public boolean equals(Object o) {
