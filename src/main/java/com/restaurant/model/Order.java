@@ -13,8 +13,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    //@Column(name = "ORDER_LIST")
-    @OneToMany(mappedBy = "order")
+    @ManyToMany(mappedBy = "order")
     private List<Dish> orderList;
     @OneToOne
     private Address address;
