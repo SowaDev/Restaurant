@@ -1,5 +1,6 @@
 package com.restaurant.model;
 
+import com.restaurant.enums.DeliveryStatus;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @ManyToMany(mappedBy = "order")
     private List<Dish> orderList;
     @OneToOne
@@ -23,4 +24,9 @@ public class Order {
     private String comment;
     @Column(name = "TOTAL_PRICE")
     private Double totalPrice;
+    @Column(name = "STATUS")
+    @Enumerated(EnumType.STRING)
+    private DeliveryStatus deliveryStatus;
+    @Column(name = "PICK_UP")
+    private Boolean isPickedUpByClient;
 }
