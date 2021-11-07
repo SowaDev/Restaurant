@@ -1,6 +1,9 @@
 package com.restaurant.service;
 
+import com.restaurant.model.Address;
 import com.restaurant.model.Order;
+import com.restaurant.model.OrderDetails;
+import com.restaurant.model.PersonalData;
 import com.restaurant.repositories.OrderRepository;
 
 public class OrderService {
@@ -15,8 +18,13 @@ public class OrderService {
         return this.orderRepository.findAll();
     }
 
-    public Order createNewOrder(Order order){
+    public Order createNewOrder(OrderDetails orderDetails,
+                                Address address, PersonalData personalData){
+        Order order;
+        if(orderDetails.getIsPickedUpByClient())
+            order = new Order.OrderBuilder(personalData, orderDetails).withAddress(address).build();
+        else
+            order = new Order.OrderBuilder(personalData, orderDetails).build();
         return this.orderRepository.save(order);
     }
-
 }
