@@ -5,7 +5,9 @@ import com.restaurant.model.Order;
 import com.restaurant.model.OrderDetails;
 import com.restaurant.model.PersonalData;
 import com.restaurant.repositories.OrderRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderService {
 
     private final OrderRepository orderRepository;

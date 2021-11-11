@@ -8,15 +8,20 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "DETAILS")
 public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany(mappedBy = "order")
+    @ManyToMany
     private final List<Dish> orderList;
+    @Column(name = "TOTAL_PRICE")
     private final Double totalPrice;
+    @Column(name = "DATE")
     private final Date date;
+    @Column(name = "PICKUP")
     private final Boolean isPickedUpByClient;
+    @Column(name = "COMMENT")
     private final String comment;
 
     private OrderDetails(OrderDetailsBuilder orderDetailsBuilder) {
