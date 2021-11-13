@@ -1,11 +1,12 @@
 package com.restaurant.controller;
 
+import com.restaurant.exception.InputNotValidException;
 import com.restaurant.model.PersonalData;
 import com.restaurant.repositories.PersonalDataRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 @RestController
@@ -19,16 +20,17 @@ public class PersonalDataController {
     }
 
     @GetMapping()
+    @ResponseStatus(code = HttpStatus.OK)
     public Iterable<PersonalData> getAllPersonalData(){
         return this.personalDataRepository.findAll();
     }
 
     @PostMapping()
-    @ResponseStatus(code = HttpStatus.CREATED, reason = "Personal data was successfully added")
-    public PersonalData createNewPersonalData(@RequestBody @Valid PersonalData personalData,
-                                              BindingResult bindingResult) {
+    public ResponseEntity<Object> createNewPersonalData(@RequestBody @Valid PersonalData personalData,
+                                                BindingResult bindingResult){
         if(bindingResult.hasErrors())
-            return personalData;
-        return this.personalDataRepository.save(personalData);
+            throw new InputNotValidException(bindingResult);
+        this.personalDataRepository.save(personalData);
+        return ResponseEntity.status(HttpStatus.OK).body(personalData);
     }
 }

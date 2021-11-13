@@ -29,4 +29,8 @@ public class OrderService {
             order = new Order.OrderBuilder(personalData, orderDetails).build();
         return this.orderRepository.save(order);
     }
+
+    public Order createNewOrder(Order order){
+        return this.orderRepository.save(order);
+    }
 }
