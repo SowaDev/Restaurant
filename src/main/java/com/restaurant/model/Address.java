@@ -4,28 +4,37 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @ToString
-public class Address implements Serializable{
+public class Address{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Pattern(regexp = "[A-Za-zżźćńółęąśŻŹĆŚŁÓ]+", message = "street name is not valid")
     private String street;
+    @Pattern(regexp = "\\d+[a-zA-z]?", message = "building number is not valid")
     private String buildingNumber;
+    @Pattern(regexp = "\\d*")
     private String apartmentNumber;
+//    @Pattern(regexp = "\\d*}")
     private Integer floor;
     private String gateCode;
+    @Pattern(regexp = "\\d{2}-\\d{3}")
     private String postCode;
     private String city;
     private String comment;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
     private Address(AddressBuilder addressBuilder){
         this.street = addressBuilder.street;

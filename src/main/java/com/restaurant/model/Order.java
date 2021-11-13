@@ -7,17 +7,23 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 //@ToString
 @Table(name = "ORDERS")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
     private Long id;
-    @OneToOne
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
     private Address address;
-    @ManyToOne
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
     private PersonalData personalData;
-    @OneToOne
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    @PrimaryKeyJoinColumn
     private OrderDetails orderDetails;
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
@@ -33,7 +39,7 @@ public class Order {
     public static class OrderBuilder{
         //Required
         private final PersonalData personalData;
-        private  final DeliveryStatus deliveryStatus;
+        private final DeliveryStatus deliveryStatus;
         private final OrderDetails orderDetails;
         //Optional
         private Address address;

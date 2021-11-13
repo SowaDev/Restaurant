@@ -1,6 +1,11 @@
 package com.restaurant.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -8,21 +13,26 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "DETAILS")
 public class OrderDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany
-    private final List<Dish> orderList;
+    @ManyToMany(mappedBy = "orders", fetch = FetchType.LAZY)
+    private List<Dish> orderList;
     @Column(name = "TOTAL_PRICE")
-    private final Double totalPrice;
+    private Double totalPrice;
     @Column(name = "DATE")
-    private final Date date;
+    @CreationTimestamp
+    private Date date;
     @Column(name = "PICKUP")
-    private final Boolean isPickedUpByClient;
+    private Boolean isPickedUpByClient;
     @Column(name = "COMMENT")
-    private final String comment;
+    private String comment;
+    @OneToOne
+    @MapsId
+    private Order order;
 
     private OrderDetails(OrderDetailsBuilder orderDetailsBuilder) {
         this.orderList = orderDetailsBuilder.orderList;

@@ -31,6 +31,10 @@ public class PersonalData{
             message = "Phone number has to consist exactly 9 numbers")
     private String phoneNumber;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

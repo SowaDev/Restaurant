@@ -24,11 +24,11 @@ public class Dish {
     private Category category;
     @Column(name = "PRICE")
     private Double price;
-
     @ManyToMany
     @JoinTable(name = "menu_orders",
-            joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "order_id"))
-    private List<Order> order;
+            joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "ID"))
+    private List<OrderDetails> orders;
+
 
     @Override
     public boolean equals(Object o) {
