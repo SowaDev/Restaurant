@@ -21,7 +21,6 @@ public class DishController {
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED, reason = "Dish was successfully added")
     public Dish createNewDish(@RequestBody Dish dish){
         return this.dishService.createNewDish(dish);
     }

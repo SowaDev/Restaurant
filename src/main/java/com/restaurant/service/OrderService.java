@@ -1,11 +1,12 @@
 package com.restaurant.service;
 
-import com.restaurant.model.Address;
-import com.restaurant.model.Order;
-import com.restaurant.model.OrderDetails;
-import com.restaurant.model.PersonalData;
+import com.restaurant.enums.DeliveryStatus;
+import com.restaurant.model.*;
 import com.restaurant.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -31,6 +32,42 @@ public class OrderService {
     }
 
     public Order createNewOrder(Order order){
+        order.getOrderDetails().setOrder(order);
+        this.orderRepository.save(order);
+        return order;
+    }
+
+    public Optional<Order> findById(Long id) {
+        return this.orderRepository.findById(id);
+    }
+
+    public Address getAddressByOrderId(Long id){
+        Optional<Order> optionalOrder = this.orderRepository.findById(id);
+        if(optionalOrder.isEmpty())
+            return null;
+        Order order = optionalOrder.get();
+        return order.getAddress();
+    }
+
+    public List<Dish> getOrderedDishesByOrderId(Long id){
+        Optional<Order> optionalOrder = this.orderRepository.findById(id);
+        if(optionalOrder.isEmpty())
+            return null;
+        Order order = optionalOrder.get();
+        return order.getOrderDetails().getOrderList();
+    }
+
+
+    public Order changeOrderStatus(Long id, DeliveryStatus deliveryStatus) {
+        Optional<Order> optionalOrder = this.orderRepository.findById(id);
+        if(optionalOrder.isEmpty())
+            return null;
+        Order order = optionalOrder.get();
+        order.setDeliveryStatus(deliveryStatus);
         return this.orderRepository.save(order);
+    }
+
+    public Iterable<Order> getOrdersByStatus(DeliveryStatus deliveryStatus) {
+        return this.orderRepository.findByDeliveryStatus(deliveryStatus);
     }
 }
