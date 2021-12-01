@@ -16,6 +16,7 @@ import java.util.Objects;
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "dish_id")
     private Integer id;
     @Column(name = "NAME")
     private String name;
@@ -24,10 +25,8 @@ public class Dish {
     private Category category;
     @Column(name = "PRICE")
     private Double price;
-    @ManyToMany
-    @JoinTable(name = "menu_orders",
-            joinColumns = @JoinColumn(name = "dish_id", referencedColumnName = "ID"))
-    private List<OrderDetails> orders;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private OrderDetails order;
 
 
     @Override

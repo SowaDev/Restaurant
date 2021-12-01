@@ -3,29 +3,36 @@ package com.restaurant.model;
 import com.restaurant.enums.DeliveryStatus;
 import lombok.*;
 import javax.persistence.*;
+import javax.validation.Valid;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 //@ToString
-@Table(name = "ORDERS")
+@Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private Long id;
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+
+    @Valid
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+
+    @Valid
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "personals_id", referencedColumnName = "id")
     private PersonalData personalData;
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
+    @Valid
     private OrderDetails orderDetails;
-    @Column(name = "STATUS")
+
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 

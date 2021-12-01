@@ -1,5 +1,6 @@
 package com.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -10,26 +11,38 @@ import javax.validation.constraints.Pattern;
 @Entity
 @Getter
 @NoArgsConstructor
-@ToString
+//@ToString
+@Table(name = "address")
 public class Address{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "street")
     @Pattern(regexp = "[A-Za-zżźćńółęąśŻŹĆŚŁÓ]+", message = "street name is not valid")
     private String street;
     @Pattern(regexp = "\\d+[a-zA-z]?", message = "building number is not valid")
+    @Column(name = "building_number")
     private String buildingNumber;
     @Pattern(regexp = "\\d*")
+    @Column(name = "apartment_number")
     private String apartmentNumber;
 //    @Pattern(regexp = "\\d*}")
+    @Column(name = "floor")
     private Integer floor;
+    @Column(name = "gate_code")
     private String gateCode;
     @Pattern(regexp = "\\d{2}-\\d{3}")
+    @Column(name = "post_code")
     private String postCode;
+    @Column(name = "city")
     private String city;
+    @Column(name = "comment")
     private String comment;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+
+    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+    //@JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     public void setOrder(Order order) {

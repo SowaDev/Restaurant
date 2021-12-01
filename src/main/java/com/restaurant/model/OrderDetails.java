@@ -1,5 +1,6 @@
 package com.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,16 +11,26 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "DETAILS")
 public class OrderDetails {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
+ //   @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToMany(mappedBy = "orders", fetch = FetchType.LAZY)
+//    @OneToMany
+//    @JoinTable(
+//            name = "MENU",
+//            joinColumns = @JoinColumn(name = "order_id"),
+//            inverseJoinColumns = @JoinColumn(name = "dish_id")
+//    )
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Dish> orderList;
     @Column(name = "TOTAL_PRICE")
     private Double totalPrice;
@@ -32,6 +43,8 @@ public class OrderDetails {
     private String comment;
     @OneToOne
     @MapsId
+    //@JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     private OrderDetails(OrderDetailsBuilder orderDetailsBuilder) {

@@ -1,5 +1,6 @@
 package com.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
@@ -11,7 +12,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
-@Table(name = "PERSONAL_DATA")
+@NoArgsConstructor
+@Table(name = "personals")
 public class PersonalData{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,9 +32,9 @@ public class PersonalData{
     @Pattern(regexp = "\\d{9}",
             message = "Phone number has to consist exactly 9 numbers")
     private String phoneNumber;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JsonBackReference
+    @OneToOne(mappedBy = "personalData", fetch = FetchType.LAZY)
+    //@JoinColumn(name = "order_id")
     private Order order;
 
     @Override
