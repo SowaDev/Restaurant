@@ -1,4 +1,4 @@
-package com.restaurant.controller;
+package com.restaurant.controller.admin;
 
 import com.restaurant.enums.DishCategory;
 import com.restaurant.model.Dish;
@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import static com.restaurant.enums.DishCategory.*;
 
 @RestController
-@RequestMapping("/menu")
-public class DishController {
+@RequestMapping("/admin/menu")
+public class AdminDishController {
 
     private final DishService dishService;
 
-    public DishController(DishService dishService) {
+    public AdminDishController(DishService dishService) {
         this.dishService = dishService;
     }
 
@@ -36,5 +36,22 @@ public class DishController {
             default -> throw new IllegalStateException("Unexpected value: " + category);
         };
         return this.dishService.getDishesByCategory(dishCategory);
+    }
+
+    @PostMapping
+    public Dish createNewDish(@RequestBody Dish dish){
+        return this.dishService.createNewDish(dish);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Dish was updated successfully")
+    public Dish updateDish(@PathVariable("id") Integer id, @RequestBody Dish dish){
+        return this.dishService.updateDish(id, dish);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.OK, reason = "Dish was deleted successfully")
+    public Dish deleteDish(@PathVariable("id") Integer id){
+        return this.dishService.deleteDish(id);
     }
 }
