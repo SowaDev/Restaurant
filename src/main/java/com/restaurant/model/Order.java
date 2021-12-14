@@ -27,6 +27,10 @@ public class Order {
     @JoinColumn(name = "personals_id", referencedColumnName = "id")
     private PersonalData personalData;
 
+//    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+//    @JoinColumn(name = "cart_id", referencedColumnName = "id")
+//    private Cart cart;
+
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     @Valid

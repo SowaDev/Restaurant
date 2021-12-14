@@ -1,11 +1,10 @@
 package com.restaurant.model;
 
-import com.restaurant.enums.Category;
+import com.restaurant.enums.DishCategory;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -22,7 +21,7 @@ public class Dish {
     private String name;
     @Column(name = "CATEGORY")
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private DishCategory dishCategory;
     @Column(name = "PRICE")
     private Double price;
     @ManyToOne(fetch = FetchType.LAZY)
