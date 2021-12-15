@@ -1,6 +1,7 @@
 package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.restaurant.security.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,8 +22,15 @@ public class Cart {
 
     @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
     @JsonBackReference
-    private Customer customer;
+    private User user;
 
     private double totalPrice;
 
+    public double getTotalPrice() {
+        int totalPrice = 0;
+        for(CartItem item: cartItems){
+            totalPrice += item.getQuantity() * item.getDish().getPrice();
+        }
+        return totalPrice;
+    }
 }

@@ -20,11 +20,15 @@ public class CartItem {
     private Dish dish;
 
     private Integer quantity;
-    private double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "cart_id")
     @JsonIgnore
     private Cart cart;
+
+    public CartItem(Dish dish, int quantity){
+        this.dish = dish;
+        this.quantity = quantity;
+    }
 
 }

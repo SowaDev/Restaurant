@@ -1,6 +1,8 @@
 package com.restaurant.security;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurant.model.Address;
+import com.restaurant.model.Cart;
 import com.restaurant.model.PersonalData;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +22,10 @@ public class User implements UserDetails {
     @OneToOne
     @JoinColumn(name = "personals_id")
     private PersonalData personalData;
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    @JsonManagedReference
+    private Cart cart;
     private final String username;
     private final String password;
 //    private final Set<? extends GrantedAuthority> grantedAuthorities;
@@ -51,7 +56,8 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public User(Address address, PersonalData personalData, String username, String password, Set<? extends GrantedAuthority> grantedAuthorities, Role role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public User(Address address, PersonalData personalData, String username,
+                String password, Set<? extends GrantedAuthority> grantedAuthorities, Role role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
         this.address = address;
         this.personalData = personalData;
         this.username = username;
@@ -64,6 +70,9 @@ public class User implements UserDetails {
         this.isEnabled = isEnabled;
     }
 
+    public Cart getCart(){
+        return cart;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

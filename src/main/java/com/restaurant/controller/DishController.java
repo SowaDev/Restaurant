@@ -6,6 +6,8 @@ import com.restaurant.service.DishService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 import static com.restaurant.enums.DishCategory.*;
 
 @RestController
@@ -21,6 +23,11 @@ public class DishController {
     @GetMapping
     public Iterable<Dish> getAllDishes(){
         return this.dishService.getAllDishes();
+    }
+
+    @GetMapping("/{id}")
+    public Dish getDishById(@PathVariable int id){
+        return dishService.getDishById(id);
     }
 
     @GetMapping("/{category}")

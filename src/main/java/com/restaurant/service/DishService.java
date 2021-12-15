@@ -1,8 +1,11 @@
 package com.restaurant.service;
 
+import com.restaurant.enums.DishCategory;
 import com.restaurant.model.Dish;
 import com.restaurant.repositories.DishRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.Optional;
 
 @Service
@@ -29,8 +32,8 @@ public class DishService {
         Dish dishToUpdate = dishToUpdateOptional.get();
         if(dish.getName() != null)
             dishToUpdate.setName(dish.getName());
-        if(dish.getCategory() != null)
-            dishToUpdate.setCategory(dish.getCategory());
+        if(dish.getDishCategory() != null)
+            dishToUpdate.setDishCategory(dish.getDishCategory());
         if(dish.getPrice() != null)
             dishToUpdate.setPrice(dish.getPrice());
         return this.dishRepository.save(dishToUpdate);
@@ -46,4 +49,14 @@ public class DishService {
     }
 
 
+    public Iterable<Dish> getDishesByCategory(DishCategory dishCategory) {
+        return this.dishRepository.findByDishCategory(dishCategory);
+    }
+
+    public Dish getDishById(@PathVariable int id) {
+        Optional<Dish> optionalDish = this.dishRepository.findById(id);
+        if(optionalDish.isEmpty())
+            return null;
+        return optionalDish.get();
+    }
 }

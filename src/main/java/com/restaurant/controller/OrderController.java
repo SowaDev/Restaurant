@@ -2,9 +2,10 @@ package com.restaurant.controller;
 
 import com.restaurant.enums.DeliveryStatus;
 import com.restaurant.exception.InputNotValidException;
-import com.restaurant.model.*;
+import com.restaurant.model.Address;
+import com.restaurant.model.Dish;
+import com.restaurant.model.Order;
 import com.restaurant.service.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -71,22 +72,5 @@ public class OrderController {
         this.orderService.createNewOrder(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
-
-//    @PostMapping("/details")
-//    @ResponseStatus(code = HttpStatus.CREATED)
-//    public OrderDetails createOrderDetails (@RequestBody OrderDetails orderDetails){
-//        return orderDetails;
-//    }
-
-//    @PostMapping
-//    @ResponseStatus(code = HttpStatus.CREATED, reason = "Order was successfully made")
-//    public Order createNewOrder(@RequestBody @Valid OrderDetails orderDetails,
-//                                @RequestBody @Valid Address address,
-//                                @RequestBody @Valid PersonalData personalData,
-//                                BindingResult bindingResult){
-//        if(bindingResult.hasErrors())
-//            throw new InputNotValidException(bindingResult);
-//        return this.orderService.createNewOrder(orderDetails, address, personalData);
-//    }
 
 }
