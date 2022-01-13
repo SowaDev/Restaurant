@@ -1,0 +1,2 @@
+INSERT INTO MENU VALUES (1, 'MAIN', 'Schabowy', 15.0);
+INSERT INTO MENU VALUES (2, 'SIDE', 'Frytki', 7.0);

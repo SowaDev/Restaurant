@@ -19,11 +19,16 @@ public class AddressController {
         this.addressRepository = addressRepository;
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     @ResponseStatus(code = HttpStatus.OK)
     public Iterable<Address> getAllAddresses(){
         return this.addressRepository.findAll();
     }
+
+//    @GetMapping("/{id}")
+//    public Address getAddressById(){
+//        return this.addressRepository
+//    }
 
     @PostMapping()
     public ResponseEntity<Address> createNewAddress(@RequestBody @Valid Address address,

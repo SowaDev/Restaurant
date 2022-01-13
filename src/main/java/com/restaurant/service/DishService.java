@@ -6,7 +6,11 @@ import com.restaurant.repositories.DishRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+
+import static com.restaurant.enums.DishCategory.*;
 
 @Service
 public class DishService {
@@ -40,10 +44,7 @@ public class DishService {
     }
 
     public Dish deleteDish(Integer id){
-        Optional<Dish> dishToDeleteOptional = this.dishRepository.findById(id);
-        if(dishToDeleteOptional.isEmpty())
-            return null;
-        Dish dishToDelete = dishToDeleteOptional.get();
+        Dish dishToDelete = getDishById(id);
         this.dishRepository.delete(dishToDelete);
         return dishToDelete;
     }
@@ -53,7 +54,7 @@ public class DishService {
         return this.dishRepository.findByDishCategory(dishCategory);
     }
 
-    public Dish getDishById(@PathVariable int id) {
+    public Dish getDishById(Integer id) {
         Optional<Dish> optionalDish = this.dishRepository.findById(id);
         if(optionalDish.isEmpty())
             return null;
