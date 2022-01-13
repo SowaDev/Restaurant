@@ -1,16 +1,20 @@
 package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restaurant.security.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "cart")
 public class Cart {
     @Id
@@ -18,13 +22,17 @@ public class Cart {
     private Long id;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();
+
+    private double totalPrice;
 
     @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
     @JsonBackReference
     private User user;
 
-    private double totalPrice;
+    @OneToOne(mappedBy = "cart")
+    @JsonIgnore
+    private Order order;
 
     public double getTotalPrice() {
         int totalPrice = 0;

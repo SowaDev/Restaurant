@@ -2,6 +2,7 @@ package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "cartItem")
 public class CartItem {
     @Id
@@ -16,7 +18,7 @@ public class CartItem {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "dish_id")
+    @JoinColumn(name = "DISH_ID")
     private Dish dish;
 
     private Integer quantity;

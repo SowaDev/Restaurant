@@ -1,12 +1,14 @@
 package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -16,37 +18,26 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "DETAILS")
-public class OrderDetails {
+public class OrderDetails implements Serializable {
     @Id
-    @Column(name = "order_id")
- //   @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
-//    @OneToMany
-//    @JoinTable(
-//            name = "MENU",
-//            joinColumns = @JoinColumn(name = "order_id"),
-//            inverseJoinColumns = @JoinColumn(name = "dish_id")
-//    )
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Dish> orderList;
-//    @Column(name = "TOTAL_PRICE")
-//    private Double totalPrice;
+
     @Column(name = "DATE")
     @CreationTimestamp
     private Date date;
+
     @Column(name = "PICKUP")
     private Boolean isPickedUpByClient;
+
     @Column(name = "COMMENT")
     private String comment;
-    @OneToOne
-    @MapsId
-    //@JoinColumn(name = "order_id")
-    @JsonBackReference
+
+    @OneToOne(mappedBy = "orderDetails")
+    @JsonIgnore
     private Order order;
 
     private OrderDetails(OrderDetailsBuilder orderDetailsBuilder) {
-        this.orderList = orderDetailsBuilder.orderList;
-//        this.totalPrice = orderDetailsBuilder.totalPrice;
         this.date = orderDetailsBuilder.date;
         this.isPickedUpByClient = orderDetailsBuilder.isPickedUpByClient;
         this.comment = orderDetailsBuilder.comment;
@@ -54,16 +45,11 @@ public class OrderDetails {
 
 
     public static class OrderDetailsBuilder{
-        private final List<Dish> orderList;
-//        private final Double totalPrice;
         private final Date date;
         private final Boolean isPickedUpByClient;
         private String comment = "";
 
-        public OrderDetailsBuilder(List<Dish> orderList,
-                                   Date date, Boolean isPickedUpByClient) {
-            this.orderList = orderList;
-//            this.totalPrice = totalPrice;
+        public OrderDetailsBuilder(Date date, Boolean isPickedUpByClient) {
             this.date = date;
             this.isPickedUpByClient = isPickedUpByClient;
         }

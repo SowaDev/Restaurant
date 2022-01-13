@@ -1,21 +1,22 @@
 package com.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restaurant.enums.DishCategory;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
-//@ToString
 @Entity
 @Table(name = "MENU")
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "dish_id")
+    @Column(name = "ID")
     private Integer id;
     @Column(name = "NAME")
     private String name;
@@ -24,8 +25,11 @@ public class Dish {
     private DishCategory dishCategory;
     @Column(name = "PRICE")
     private Double price;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private OrderDetails order;
+
+    @Column(name = "cart_item")
+    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<CartItem> cartItems;
 
 
     @Override
