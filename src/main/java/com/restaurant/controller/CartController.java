@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
     private final CartService cartService;
 
-
     public CartController(CartService cartService) {
         this.cartService = cartService;
     }
@@ -25,19 +24,21 @@ public class CartController {
     }
 
     @PutMapping("/add/{dishId}")
-    public Cart addItem(@PathVariable int dishId, @AuthenticationPrincipal User activeUser){
+    public Cart addItem(@PathVariable Integer dishId,
+                        @AuthenticationPrincipal User activeUser){
         return this.cartService.addItem(dishId, activeUser);
     }
 
-    @PutMapping("/remove")
-    public Cart removeItem(@RequestBody Dish dish, @AuthenticationPrincipal User activeUser){
-        return this.cartService.removeItem(dish, activeUser);
+    @PutMapping("/remove/{dishId}")
+    public Cart removeItem(@PathVariable Integer dishId,
+                           @AuthenticationPrincipal User activeUser){
+        return this.cartService.removeItem(dishId, activeUser);
     }
 
-    @PutMapping("/changeQuantity/{number}")
-    public Cart changeQuantity(@PathVariable int number, @RequestBody Dish dish,
+    @PutMapping("{dishId}/changeQuantity/{number}")
+    public Cart changeQuantity(@PathVariable Integer number, @PathVariable Integer dishId,
                                @AuthenticationPrincipal User activeUser){
-        return this.cartService.changeQuantity(number, dish, activeUser);
+        return this.cartService.changeQuantity(number, dishId, activeUser);
     }
 
 
