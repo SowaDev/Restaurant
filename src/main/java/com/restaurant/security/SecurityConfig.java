@@ -24,14 +24,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//                .csrf().disable()
+                .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/menu").permitAll()
                 .antMatchers("/personalData").hasRole(Role.ADMIN.name())
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                .defaultSuccessUrl("/menu", true);
+        http.headers().frameOptions().disable();
+
     }
 
     @Bean

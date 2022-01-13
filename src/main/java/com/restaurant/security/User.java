@@ -56,10 +56,17 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public User(Address address, PersonalData personalData, String username,
-                String password, Set<? extends GrantedAuthority> grantedAuthorities, Role role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
+    public User(Address address, PersonalData personalData,
+                Cart cart, String username,
+                String password,
+                Set<? extends GrantedAuthority> grantedAuthorities,
+                Role role, boolean isAccountNonExpired,
+                boolean isAccountNonLocked,
+                boolean isCredentialsNonExpired,
+                boolean isEnabled) {
         this.address = address;
         this.personalData = personalData;
+        this.cart = cart;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -107,5 +114,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isEnabled;
+    }
+
+    public Address getAddress(){
+        return address;
+    }
+
+    public PersonalData getPersonalData(){
+        return personalData;
     }
 }
