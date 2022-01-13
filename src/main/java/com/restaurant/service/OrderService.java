@@ -25,13 +25,11 @@ public class OrderService {
     }
 
     public Order createNewOrder(User activeUser, OrderDetails orderDetails){
-//        if(orderDetails.getIsPickedUpByClient())
-//            order = new Order.OrderBuilder(activeUser.getPersonalData(), orderDetails, activeUser.getCart()).withAddress(activeUser.getAddress()).build();
-//        elseO
-//            order = new Order.OrderBuilder(activeUser.getPersonalData(), orderDetails, activeUser.getCart()).build();
-
-        Order order = new Order(activeUser.getAddress(), activeUser.getPersonalData(), activeUser.getCart(), orderDetails, DeliveryStatus.ORDERED);
-        return this.orderRepository.save(order);
+        Order order = new Order(activeUser.getAddress(), activeUser.getPersonalData(),
+                activeUser.getCart(), orderDetails, activeUser, DeliveryStatus.ORDERED);
+        this.orderRepository.save(order);
+        activeUser.setCart(new Cart());
+        return order;
     }
 
 //    public Order createNewOrder(Order order){

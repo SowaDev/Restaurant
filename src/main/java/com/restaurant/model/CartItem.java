@@ -23,9 +23,11 @@ public class CartItem {
 
     private Integer quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
+//    @ManyToOne
+//    @JoinColumn(name = "cart_id")
+//    @JsonIgnore
     @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Cart cart;
 
     public CartItem(Dish dish, int quantity){

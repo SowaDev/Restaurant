@@ -1,9 +1,11 @@
 package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurant.enums.DeliveryStatus;
+import com.restaurant.security.User;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import javax.validation.Valid;
 
@@ -30,26 +32,26 @@ public class Order {
     @JoinColumn(name = "personals_id", referencedColumnName = "id")
     private PersonalData personalData;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Cart cart;
-
-//    @JsonManagedReference(value = "order-details")
-//    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    @PrimaryKeyJoinColumn
-//    @Valid
 
     @OneToOne(cascade = CascadeType.ALL)
     private OrderDetails orderDetails;
+
+    //@JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private User user;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private DeliveryStatus deliveryStatus;
 
-    public Order(Address address, PersonalData personalData, Cart cart, OrderDetails orderDetails, DeliveryStatus deliveryStatus) {
+    public Order(Address address, PersonalData personalData, Cart cart, OrderDetails orderDetails, User user, DeliveryStatus deliveryStatus) {
         this.address = address;
         this.personalData = personalData;
         this.cart = cart;
         this.orderDetails = orderDetails;
+//        this.user = user;
         this.deliveryStatus = deliveryStatus;
     }
 

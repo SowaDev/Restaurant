@@ -21,7 +21,8 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
     private double totalPrice;
@@ -33,6 +34,16 @@ public class Cart {
     @OneToOne(mappedBy = "cart")
     @JsonIgnore
     private Order order;
+
+    public void addCartItem(CartItem cartItem){
+        cartItems.add(cartItem);
+        cartItem.setCart(this);
+    }
+
+    public void removeCartItem(CartItem cartItem){
+        cartItems.remove(cartItem);
+        cartItem.setCart(null);
+    }
 
     public double getTotalPrice() {
         int totalPrice = 0;

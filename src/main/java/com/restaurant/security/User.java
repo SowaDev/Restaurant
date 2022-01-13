@@ -3,12 +3,14 @@ package com.restaurant.security;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurant.model.Address;
 import com.restaurant.model.Cart;
+import com.restaurant.model.Order;
 import com.restaurant.model.PersonalData;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,16 +18,23 @@ public class User implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
+
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address address;
+
     @OneToOne
     @JoinColumn(name = "personals_id")
     private PersonalData personalData;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     @JsonManagedReference
     private Cart cart;
+
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private Set<Order> orders = new HashSet<>();
+
     private final String username;
     private final String password;
 //    private final Set<? extends GrantedAuthority> grantedAuthorities;
@@ -79,6 +88,10 @@ public class User implements UserDetails {
 
     public Cart getCart(){
         return cart;
+    }
+
+    public void setCart(Cart cart){
+        this.cart = cart;
     }
 
     @Override
