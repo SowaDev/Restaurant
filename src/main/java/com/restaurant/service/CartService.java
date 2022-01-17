@@ -17,7 +17,7 @@ public class CartService {
         this.dishService = dishService;
     }
 
-    public Cart addItem(Integer dishId, User activeUser) {
+    public Cart addItem(Long dishId, User activeUser) {
         Cart cart = activeUser.getCart();
         Dish dish = dishService.getDishById(dishId);
         CartItem item = getCartItemByDishId(dishId, cart);
@@ -28,7 +28,7 @@ public class CartService {
         return cart;
     }
 
-    public CartItem getCartItemByDishId(Integer dishId, Cart cart) {
+    public CartItem getCartItemByDishId(Long dishId, Cart cart) {
         List<CartItem> cartItems = cart.getCartItems();
         for (CartItem item : cartItems) {
             if (Objects.equals(item.getDish().getId(), dishId))
@@ -38,7 +38,7 @@ public class CartService {
     }
 
 
-    public Cart removeItem(Integer dishId, User activeUser) {
+    public Cart removeItem(Long dishId, User activeUser) {
         Cart cart = activeUser.getCart();
         CartItem item = getCartItemByDishId(dishId, cart);
         List<CartItem> cartItems = cart.getCartItems();
@@ -47,7 +47,7 @@ public class CartService {
         return cart;
     }
 
-    public Cart changeQuantity(Integer number, Integer dishId, User activeUser) {
+    public Cart changeQuantity(Integer number, Long dishId, User activeUser) {
         Cart cart = activeUser.getCart();
         CartItem item = getCartItemByDishId(dishId, cart);
         if(item != null)

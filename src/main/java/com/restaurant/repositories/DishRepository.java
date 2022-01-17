@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DishRepository extends CrudRepository<Dish, Integer> {
+public interface DishRepository extends CrudRepository<Dish, Long> {
     List<Dish> findByDishCategory(DishCategory dishCategory);
 }

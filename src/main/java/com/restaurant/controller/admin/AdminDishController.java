@@ -23,7 +23,12 @@ public class AdminDishController {
         return this.dishService.getAllDishes();
     }
 
-    @GetMapping("/{category}")
+    @GetMapping("/{id}")
+    public Dish getDishById(@PathVariable Long id){
+        return this.dishService.getDishById(id);
+    }
+
+    @GetMapping("/bycategory/{category}")
     public Iterable<Dish> getDishesByCategory(@PathVariable String category){
         DishCategory dishCategory = switch (category) {
             case "daily" -> DAILY;
@@ -45,13 +50,13 @@ public class AdminDishController {
 
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK, reason = "Dish was updated successfully")
-    public Dish updateDish(@PathVariable("id") Integer id, @RequestBody Dish dish){
+    public Dish updateDish(@PathVariable("id") Long id, @RequestBody Dish dish){
         return this.dishService.updateDish(id, dish);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK, reason = "Dish was deleted successfully")
-    public Dish deleteDish(@PathVariable("id") Integer id){
+    public Dish deleteDish(@PathVariable("id") Long id){
         return this.dishService.deleteDish(id);
     }
 }

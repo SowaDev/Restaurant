@@ -3,10 +3,10 @@ package com.restaurant.controller;
 import com.restaurant.enums.DishCategory;
 import com.restaurant.model.Dish;
 import com.restaurant.service.DishService;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.restaurant.enums.DishCategory.*;
 
@@ -26,11 +26,11 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    public Dish getDishById(@PathVariable int id){
-        return dishService.getDishById(id);
+    public Dish getDishById(@PathVariable Long id){
+        return this.dishService.getDishById(id);
     }
 
-    @GetMapping("/{category}")
+    @GetMapping("/bycategory/{category}")
     public Iterable<Dish> getDishesByCategory(@PathVariable String category){
         DishCategory dishCategory = switch (category) {
             case "daily" -> DAILY;

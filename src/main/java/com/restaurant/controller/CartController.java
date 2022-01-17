@@ -24,19 +24,19 @@ public class CartController {
     }
 
     @PutMapping("/add/{dishId}")
-    public Cart addItem(@PathVariable Integer dishId,
+    public Cart addItem(@PathVariable Long dishId,
                         @AuthenticationPrincipal User activeUser){
         return this.cartService.addItem(dishId, activeUser);
     }
 
     @PutMapping("/remove/{dishId}")
-    public Cart removeItem(@PathVariable Integer dishId,
+    public Cart removeItem(@PathVariable Long dishId,
                            @AuthenticationPrincipal User activeUser){
         return this.cartService.removeItem(dishId, activeUser);
     }
 
     @PutMapping("{dishId}/changeQuantity/{number}")
-    public Cart changeQuantity(@PathVariable Integer number, @PathVariable Integer dishId,
+    public Cart changeQuantity(@PathVariable Integer number, @PathVariable Long dishId,
                                @AuthenticationPrincipal User activeUser){
         return this.cartService.changeQuantity(number, dishId, activeUser);
     }
