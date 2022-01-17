@@ -1,6 +1,8 @@
 package com.restaurant.service;
 
 import com.restaurant.enums.DeliveryStatus;
+import com.restaurant.exception.EmptyCartException;
+import com.restaurant.exception.NoSuchElementFoundException;
 import com.restaurant.model.*;
 import com.restaurant.repositories.CartRepository;
 import com.restaurant.repositories.OrderRepository;
@@ -25,6 +27,9 @@ public class OrderService {
     }
 
     public Order createNewOrder(User activeUser, OrderDetails orderDetails){
+        Cart cart = activeUser.getCart();
+        if(cart.getCartItems().isEmpty())
+            throw new EmptyCartException();
         Order order = new Order(activeUser.getAddress(), activeUser.getPersonalData(),
                 activeUser.getCart(), orderDetails, activeUser, DeliveryStatus.ORDERED);
         this.orderRepository.save(order);
@@ -39,10 +44,8 @@ public class OrderService {
 //    }
 
     public Order findById(Long id) {
-        Optional<Order> optionalOrder = this.orderRepository.findById(id);
-        if(optionalOrder.isEmpty())
-            return null;
-        return optionalOrder.get();
+        return this.orderRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementFoundException(id));
     }
 
     public Address getAddressByOrderId(Long id){

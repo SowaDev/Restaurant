@@ -1,6 +1,7 @@
 package com.restaurant.service;
 
 import com.restaurant.enums.DishCategory;
+import com.restaurant.exception.NoSuchElementFoundException;
 import com.restaurant.model.Dish;
 import com.restaurant.repositories.DishRepository;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class DishService {
         return this.dishRepository.save(dish);
     }
 
-    public Dish updateDish(Integer id, Dish dish){
+    public Dish updateDish(Long id, Dish dish){
         Optional<Dish> dishToUpdateOptional = this.dishRepository.findById(id);
         if(dishToUpdateOptional.isEmpty())
             return null;
@@ -43,7 +44,7 @@ public class DishService {
         return this.dishRepository.save(dishToUpdate);
     }
 
-    public Dish deleteDish(Integer id){
+    public Dish deleteDish(Long id){
         Dish dishToDelete = getDishById(id);
         this.dishRepository.delete(dishToDelete);
         return dishToDelete;
@@ -54,10 +55,8 @@ public class DishService {
         return this.dishRepository.findByDishCategory(dishCategory);
     }
 
-    public Dish getDishById(Integer id) {
-        Optional<Dish> optionalDish = this.dishRepository.findById(id);
-        if(optionalDish.isEmpty())
-            return null;
-        return optionalDish.get();
+    public Dish getDishById(Long id) {
+        return this.dishRepository.findById(id).orElseThrow(() ->
+                new NoSuchElementFoundException(id));
     }
 }
