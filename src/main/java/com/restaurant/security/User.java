@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 public class User implements UserDetails {
     @Id
     @Column(name = "id", nullable = false)
@@ -27,9 +26,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "personals_id")
     private PersonalData personalData;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    @JsonManagedReference
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "cart_id")
+//    @JsonManagedReference
     private Cart cart;
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -37,7 +36,7 @@ public class User implements UserDetails {
 
     private final String username;
     private final String password;
-//    private final Set<? extends GrantedAuthority> grantedAuthorities;
+    private final Set<? extends GrantedAuthority> grantedAuthorities;
     @Enumerated(EnumType.STRING)
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -79,7 +78,7 @@ public class User implements UserDetails {
         this.username = username;
         this.password = password;
         this.role = role;
-//        this.grantedAuthorities = grantedAuthorities;
+        this.grantedAuthorities = grantedAuthorities;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;

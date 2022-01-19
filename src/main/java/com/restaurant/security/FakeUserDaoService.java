@@ -1,7 +1,9 @@
 package com.restaurant.security;
 
 import com.google.common.collect.Lists;
+import com.restaurant.model.Address;
 import com.restaurant.model.Cart;
+import com.restaurant.model.PersonalData;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -30,9 +32,21 @@ public class FakeUserDaoService implements UserDao{
     }
 
     private List<User> getUsers(){
+        Address clientAddress = new Address.AddressBuilder(
+                "DowningStreet", "2332", "32-432", "Sosnondon").build();
+        PersonalData clientPersonalData = new PersonalData("Kate", "Dworski",
+                "katedworski@email.com", "324234123");
         List<User> users = Lists.newArrayList(
-                new User(null, null, new Cart(), "client",
+                new User(clientAddress, clientPersonalData, new Cart(), "client",
                         passwordEncoder.encode("client"),
+                        CLIENT.getGrantedAuthorities(),
+                        CLIENT,
+                        true,
+                        true,
+                        true,
+                        true),
+                new User(null, null, new Cart(), "client2",
+                        passwordEncoder.encode("client2"),
                         CLIENT.getGrantedAuthorities(),
                         CLIENT,
                         true,

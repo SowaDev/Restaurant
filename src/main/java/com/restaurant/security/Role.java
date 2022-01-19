@@ -11,26 +11,25 @@ import javax.persistence.*;
 
 import static com.restaurant.security.Permissions.*;
 
-@Entity
 @Getter
 public enum Role {
-    CLIENT(Sets.newHashSet(PERMISSION1)),
-    EMPLOYEE(Sets.newHashSet(PERMISSION2)),
-    ADMIN(Sets.newHashSet(PERMISSION1, PERMISSION2, PERMISSION3));
+    CLIENT(Sets.newHashSet(ORDER_CREATE)),
+    EMPLOYEE(Sets.newHashSet(ORDER_READ, USER_READ, ORDER_CHANGE_STATUS)),
+    ADMIN(Sets.newHashSet(ORDER_WRITE, ORDER_CREATE, MENU_WRITE, USER_WRITE, USER_READ, ORDER_CHANGE_STATUS));
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @ManyToMany
-    @JoinTable(
-            name = "role_permissions",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permissions_id")
-    )
+//    @ManyToMany
+//    @JoinTable(
+//            name = "role_permissions",
+//            joinColumns = @JoinColumn(name = "role_id"),
+//            inverseJoinColumns = @JoinColumn(name = "permissions_id")
+//    )
     @Enumerated(EnumType.STRING)
     private Set<Permissions> permissions;
 
-    @OneToMany(mappedBy = "role")
+    //@OneToMany(mappedBy = "role")
     private Set<User> users;
 
     public Long getId() {

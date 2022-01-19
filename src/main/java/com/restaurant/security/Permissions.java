@@ -3,11 +3,14 @@ package com.restaurant.security;
 import javax.persistence.*;
 import java.util.Collection;
 
-@Entity
 public enum Permissions {
-    PERMISSION1("permission1"),
-    PERMISSION2("permission2"),
-    PERMISSION3("permission3");
+    MENU_WRITE("menu:write"),
+    ORDER_READ("order:read"),
+    ORDER_CREATE("order:create"),
+    ORDER_WRITE("order:write"),
+    ORDER_CHANGE_STATUS("order:change_status"),
+    USER_READ("user:read"),
+    USER_WRITE("user:write");
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -15,7 +18,7 @@ public enum Permissions {
 
     private final String permission;
 
-    @ManyToMany(mappedBy = "permissions")
+    //@ManyToMany(mappedBy = "permissions")
     private Collection<Role> roles;
 
     public Long getId() {
