@@ -1,4 +1,4 @@
-package com.restaurant.model;
+/*package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurant.security.User;
@@ -36,4 +36,4 @@ public class Customer {
     @OneToOne
     @JoinColumn(name = "")
     private User user;
-}
+}*/

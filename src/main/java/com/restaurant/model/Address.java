@@ -19,7 +19,7 @@ public class Address{
     @Column(name = "id")
     private Long id;
     @Column(name = "street")
-    @Pattern(regexp = "[A-Za-zżźćńółęąśŻŹĆŚŁÓ]+", message = "street name is not valid")
+    //@Pattern(regexp = "[A-Za-zżźćńółęąśŻŹĆŚŁÓ]+", message = "street name is not valid")
     private String street;
     @Pattern(regexp = "\\d+[a-zA-z]?", message = "building number is not valid")
     @Column(name = "building_number")

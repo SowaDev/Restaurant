@@ -37,6 +37,13 @@ public class PersonalData{
     //@JoinColumn(name = "order_id")
     private Order order;
 
+
+    public PersonalData(String name, String surname, String email, String phoneNumber){
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

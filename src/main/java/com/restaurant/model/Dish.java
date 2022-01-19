@@ -17,7 +17,7 @@ public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Integer id;
+    private Long id;
     @Column(name = "NAME")
     private String name;
     @Column(name = "CATEGORY")
