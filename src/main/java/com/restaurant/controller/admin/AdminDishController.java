@@ -4,6 +4,7 @@ import com.restaurant.enums.DishCategory;
 import com.restaurant.model.Dish;
 import com.restaurant.service.DishService;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static com.restaurant.enums.DishCategory.*;
@@ -18,16 +19,19 @@ public class AdminDishController {
         this.dishService = dishService;
     }
 
+    @PreAuthorize("hasAuthority('menu:write')")
     @GetMapping
     public Iterable<Dish> getAllDishes(){
         return this.dishService.getAllDishes();
     }
 
+    @PreAuthorize("hasAuthority('menu:write')")
     @GetMapping("/{id}")
     public Dish getDishById(@PathVariable Long id){
         return this.dishService.getDishById(id);
     }
 
+    @PreAuthorize("hasAuthority('menu:write')")
     @GetMapping("/bycategory/{category}")
     public Iterable<Dish> getDishesByCategory(@PathVariable String category){
         DishCategory dishCategory = switch (category) {
@@ -43,17 +47,20 @@ public class AdminDishController {
         return this.dishService.getDishesByCategory(dishCategory);
     }
 
+    @PreAuthorize("hasAuthority('menu:write')")
     @PostMapping
     public Dish createNewDish(@RequestBody Dish dish){
         return this.dishService.createNewDish(dish);
     }
 
+    @PreAuthorize("hasAuthority('menu:write')")
     @PutMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK, reason = "Dish was updated successfully")
     public Dish updateDish(@PathVariable("id") Long id, @RequestBody Dish dish){
         return this.dishService.updateDish(id, dish);
     }
 
+    @PreAuthorize("hasAuthority('menu:write')")
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK, reason = "Dish was deleted successfully")
     public Dish deleteDish(@PathVariable("id") Long id){
