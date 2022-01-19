@@ -36,6 +36,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(NoAddressOrPersonalsException.class)
+    public ResponseEntity<ErrorResponse> handleNoAddressOrPersonalsException(
+            EmptyCartException exception,
+            HttpServletRequest request){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(), request.getRequestURI());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 //    @ExceptionHandler(InputNotValidException.class)
 //    @ResponseStatus(HttpStatus.BAD_REQUEST)
 //    public ResponseEntity<ErrorResponse> handleInputNotValidException(InputNotValidException e) {
