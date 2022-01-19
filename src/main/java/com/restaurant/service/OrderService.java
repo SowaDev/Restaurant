@@ -2,6 +2,7 @@ package com.restaurant.service;
 
 import com.restaurant.enums.DeliveryStatus;
 import com.restaurant.exception.EmptyCartException;
+import com.restaurant.exception.NoAddressOrPersonalsException;
 import com.restaurant.exception.NoSuchElementFoundException;
 import com.restaurant.model.*;
 import com.restaurant.repositories.CartRepository;
@@ -30,6 +31,8 @@ public class OrderService {
         Cart cart = activeUser.getCart();
         if(cart.getCartItems().isEmpty())
             throw new EmptyCartException();
+        if(activeUser.getAddress() == null || activeUser.getPersonalData() == null)
+            throw new NoAddressOrPersonalsException();
         Order order = new Order(activeUser.getAddress(), activeUser.getPersonalData(),
                 activeUser.getCart(), orderDetails, activeUser, DeliveryStatus.ORDERED);
         this.orderRepository.save(order);
