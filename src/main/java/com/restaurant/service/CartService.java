@@ -18,6 +18,8 @@ public class CartService {
     }
 
     public Cart addItem(Long dishId, User activeUser) {
+        if(activeUser.getCart() == null)
+            activeUser.setCart(new Cart());
         Cart cart = activeUser.getCart();
         Dish dish = dishService.getDishById(dishId);
         CartItem item = getCartItemByDishId(dishId, cart);
