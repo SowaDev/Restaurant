@@ -13,39 +13,43 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 public class User implements UserDetails {
     @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "id", nullable = false)
+    private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "address_id")
+    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne
-    @JoinColumn(name = "personals_id")
+    @OneToOne(cascade = CascadeType.ALL)
     private PersonalData personalData;
 
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "cart_id")
-//    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cart_id")
+    //@JsonManagedReference
     private Cart cart;
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<Order> orders = new HashSet<>();
 
-    private final String username;
-    private final String password;
-    private final Set<? extends GrantedAuthority> grantedAuthorities;
+    private String username;
+    private String password;
+//    @ElementCollection
+//    private Set<? extends GrantedAuthority> grantedAuthorities;
     @Enumerated(EnumType.STRING)
-    @ManyToOne
-    @JoinColumn(name = "role_id")
+//    @ManyToOne
+//    @JoinColumn(name = "role_id")
     private Role role;
-    private final boolean isAccountNonExpired;
-    private final boolean isAccountNonLocked;
-    private final boolean isCredentialsNonExpired;
-    private final boolean isEnabled;
+//    private boolean isAccountNonExpired;
+//    private boolean isAccountNonLocked;
+//    private boolean isCredentialsNonExpired;
+//    private boolean isEnabled;
 
+    public User() {
+    }
 
 
     public Role getRole() {
@@ -56,33 +60,35 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
     public User(Address address, PersonalData personalData,
                 Cart cart, String username,
                 String password,
-                Set<? extends GrantedAuthority> grantedAuthorities,
-                Role role, boolean isAccountNonExpired,
-                boolean isAccountNonLocked,
-                boolean isCredentialsNonExpired,
-                boolean isEnabled) {
+//                Set<? extends GrantedAuthority> grantedAuthorities,
+                Role role)
+//                boolean isAccountNonExpired,
+//                boolean isAccountNonLocked,
+//                boolean isCredentialsNonExpired,
+//                boolean isEnabled) {
+    {
         this.address = address;
         this.personalData = personalData;
         this.cart = cart;
         this.username = username;
         this.password = password;
         this.role = role;
-        this.grantedAuthorities = grantedAuthorities;
-        this.isAccountNonExpired = isAccountNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isEnabled = isEnabled;
+//        this.grantedAuthorities = grantedAuthorities;
+//        this.isAccountNonExpired = isAccountNonExpired;
+//        this.isAccountNonLocked = isAccountNonLocked;
+//        this.isCredentialsNonExpired = isCredentialsNonExpired;
+//        this.isEnabled = isEnabled;
     }
 
     public Cart getCart(){
@@ -110,29 +116,37 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return isAccountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isAccountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return isCredentialsNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return isEnabled;
+        return true;
     }
 
     public Address getAddress(){
         return address;
     }
 
+    public void setAddress(Address address){
+        this.address = address;
+    }
+
     public PersonalData getPersonalData(){
         return personalData;
+    }
+
+    public void setPersonalData(PersonalData personalData) {
+        this.personalData = personalData;
     }
 }

@@ -16,29 +16,23 @@ public enum Role {
     CLIENT(Sets.newHashSet(ORDER_CREATE)),
     EMPLOYEE(Sets.newHashSet(ORDER_READ, USER_READ, ORDER_CHANGE_STATUS)),
     ADMIN(Sets.newHashSet(ORDER_WRITE, ORDER_CREATE, MENU_WRITE, USER_WRITE, USER_READ, ORDER_CHANGE_STATUS));
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+//    @Id
+//    @Column(name = "id", nullable = false)
+//    private Long id;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "role_permissions",
-//            joinColumns = @JoinColumn(name = "role_id"),
-//            inverseJoinColumns = @JoinColumn(name = "permissions_id")
-//    )
-    @Enumerated(EnumType.STRING)
+//    @ElementCollection
     private Set<Permissions> permissions;
 
-    //@OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role")
     private Set<User> users;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     Role(Set<Permissions> permissions) {
         this.permissions = permissions;

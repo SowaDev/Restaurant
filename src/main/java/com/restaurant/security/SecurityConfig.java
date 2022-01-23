@@ -7,17 +7,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
-    public SecurityConfig(PasswordEncoder passwordEncoder, UserService userService) {
-        this.passwordEncoder = passwordEncoder;
+    public SecurityConfig(UserService userService) {
         this.userService = userService;
     }
 
@@ -27,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/menu/**").permitAll()
+                .antMatchers("/admin/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest()
                 .authenticated()
@@ -37,37 +37,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(userService);
-        return provider;
-    }
-
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(userService);
+        return provider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(10);
+    }
+
     //    @Override
 //    @Bean
 //    protected UserDetailsService userDetailsService() {
-//        UserDetails clientUser = User.builder()
-//                .username("client")
-//                .password(passwordEncoder.encode("client"))
-//                .roles(UserRoles.CLIENT.name())
-//                .build();
-//
 //        UserDetails adminUser = User.builder()
 //                .username("admin")
 //                .password(passwordEncoder.encode("admin"))
 //                .roles(UserRoles.ADMIN.name())
 //                .build();
-//
-//        return new InMemoryUserDetailsManager(
-//                clientUser,
-//                adminUser
-//        );
+//        return new InMemoryUserDetailsManager(adminUser);
 //    }
 }

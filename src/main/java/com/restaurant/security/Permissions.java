@@ -11,14 +11,14 @@ public enum Permissions {
     ORDER_CHANGE_STATUS("order:change_status"),
     USER_READ("user:read"),
     USER_WRITE("user:write");
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "id", nullable = false)
+//    private Long id;
 
     private final String permission;
 
-    //@ManyToMany(mappedBy = "permissions")
+/*    @ManyToMany(mappedBy = "permissions")
     private Collection<Role> roles;
 
     public Long getId() {
@@ -27,7 +27,7 @@ public enum Permissions {
 
     public void setId(Long id) {
         this.id = id;
-    }
+    }*/
 
 
     Permissions(String permission) {
