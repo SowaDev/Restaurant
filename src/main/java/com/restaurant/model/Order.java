@@ -22,14 +22,12 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    @Valid
+//    @Valid
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @Valid
+//    @Valid
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "personals_id", referencedColumnName = "id")
     private PersonalData personalData;
 
     @OneToOne(cascade = CascadeType.PERSIST)

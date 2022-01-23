@@ -1,16 +1,18 @@
 package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.restaurant.security.User;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 //@ToString
 @Table(name = "address")
 public class Address{
@@ -36,13 +38,17 @@ public class Address{
     @Column(name = "post_code")
     private String postCode;
     @Column(name = "city")
+    @Pattern(regexp = "[A-Za-zżźćńółęąśŻŹĆŚŁÓ]+", message = "city name is not valid")
     private String city;
     @Column(name = "comment")
     private String comment;
 
-    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
-    //@JoinColumn(name = "order_id")
-    @JsonBackReference
+    @JsonIgnore
+    @OneToOne(mappedBy = "address")
+    private User user;
+
+    @OneToOne(mappedBy = "address")
+    @JsonIgnore
     private Order order;
 
     public void setOrder(Order order) {

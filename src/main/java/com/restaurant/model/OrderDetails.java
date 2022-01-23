@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "DETAILS")
 public class OrderDetails implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "DATE")

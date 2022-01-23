@@ -1,6 +1,8 @@
 package com.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.restaurant.security.User;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
@@ -13,6 +15,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "personals")
 public class PersonalData{
     @Id
@@ -26,15 +29,19 @@ public class PersonalData{
     private String surname;
     @Column(name = "EMAIL")
     @Email
-    @NotBlank
+    //@NotBlank
     private String email;
     @Column(name = "PHONE_NUMBER")
     @Pattern(regexp = "\\d{9}",
             message = "Phone number has to consist exactly 9 numbers")
     private String phoneNumber;
-    @JsonBackReference
-    @OneToOne(mappedBy = "personalData", fetch = FetchType.LAZY)
-    //@JoinColumn(name = "order_id")
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "personalData")
+    private User user;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "personalData")
     private Order order;
 
 
