@@ -1,8 +1,6 @@
 package com.restaurant.controller;
 
 import com.restaurant.model.Cart;
-import com.restaurant.model.Dish;
-import com.restaurant.security.FakeUserDaoService;
 import com.restaurant.security.User;
 import com.restaurant.service.CartService;
 import com.restaurant.service.DishService;
