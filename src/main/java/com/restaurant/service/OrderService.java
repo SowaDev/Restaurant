@@ -29,7 +29,7 @@ public class OrderService {
 
     public Order createNewOrder(User activeUser, OrderDetails orderDetails){
         Cart cart = activeUser.getCart();
-        if(cart.getCartItems().isEmpty())
+        if(cart == null || cart.getCartItems().isEmpty())
             throw new EmptyCartException();
         if(activeUser.getAddress() == null || activeUser.getPersonalData() == null)
             throw new NoAddressOrPersonalsException();
