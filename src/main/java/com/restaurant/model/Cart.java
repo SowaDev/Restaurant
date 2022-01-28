@@ -27,8 +27,7 @@ public class Cart {
 
     private double totalPrice;
 
-//    @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
-//    @JsonBackReference
+    @OneToOne(mappedBy = "cart", fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
 

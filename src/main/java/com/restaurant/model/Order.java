@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Table(name = "orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -30,15 +30,15 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL)
     private PersonalData personalData;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     private Cart cart;
 
     @OneToOne(cascade = CascadeType.ALL)
     private OrderDetails orderDetails;
 
-    //@JsonIgnore
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
@@ -49,7 +49,7 @@ public class Order {
         this.personalData = personalData;
         this.cart = cart;
         this.orderDetails = orderDetails;
-//        this.user = user;
+        this.user = user;
         this.deliveryStatus = deliveryStatus;
     }
 

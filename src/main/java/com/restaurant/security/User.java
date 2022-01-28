@@ -1,5 +1,6 @@
 package com.restaurant.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.restaurant.model.Address;
 import com.restaurant.model.Cart;
@@ -17,23 +18,23 @@ import java.util.Set;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "id", nullable = false)
     private Integer id;
 
     @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "address_id")
     private Address address;
 
     @OneToOne(cascade = CascadeType.ALL)
     private PersonalData personalData;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    //@JsonManagedReference
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Order> orders = new HashSet<>();
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private Cart cart;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Order> orders;
 
     private String username;
     private String password;

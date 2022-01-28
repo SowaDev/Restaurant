@@ -8,6 +8,7 @@ import com.restaurant.model.*;
 import com.restaurant.repositories.CartRepository;
 import com.restaurant.repositories.OrderRepository;
 import com.restaurant.security.User;
+import com.restaurant.security.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,10 +18,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final CartRepository cartRepository;
+    private final UserRepository userRepository;
 
-    public OrderService(OrderRepository orderRepository, CartRepository cartRepository) {
+    public OrderService(OrderRepository orderRepository, CartRepository cartRepository, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.cartRepository = cartRepository;
+        this.userRepository = userRepository;
     }
 
     public Iterable<Order> getAllOrders(){
@@ -29,15 +32,16 @@ public class OrderService {
 
     public Order createNewOrder(User activeUser, OrderDetails orderDetails){
         Cart cart = activeUser.getCart();
+        User user = this.userRepository.findByUsername(activeUser.getUsername()).orElseThrow();
         if(cart == null || cart.getCartItems().isEmpty())
             throw new EmptyCartException();
-        if(activeUser.getAddress() == null || activeUser.getPersonalData() == null)
+        if(user.getAddress() == null || user.getPersonalData() == null)
             throw new NoAddressOrPersonalsException();
-        Order order = new Order(activeUser.getAddress(), activeUser.getPersonalData(),
-                activeUser.getCart(), orderDetails, activeUser, DeliveryStatus.ORDERED);
-        this.orderRepository.save(order);
+        Order order = new Order(user.getAddress(), user.getPersonalData(),
+                activeUser.getCart(), orderDetails, user, DeliveryStatus.ORDERED);
+//        this.orderRepository.save(order);
         activeUser.setCart(new Cart());
-        return order;
+        return this.orderRepository.save(order);
     }
 
 //    public Order createNewOrder(Order order){
@@ -78,5 +82,10 @@ public class OrderService {
         Order orderToDelete = findById(id);
         this.orderRepository.delete(orderToDelete);
         return orderToDelete;
+    }
+
+    public Cart getCartByOrderId(Long id) {
+        Order order = findById(id);
+        return order.getCart();
     }
 }

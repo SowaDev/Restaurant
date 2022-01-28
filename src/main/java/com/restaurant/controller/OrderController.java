@@ -57,6 +57,12 @@ public class OrderController {
         return this.orderService.getAddressByOrderId(id);
     }
 
+//    @PreAuthorize("hasAuthority('order:read')")
+    @GetMapping("/{id}/cart")
+    public Cart getCartByOrderId(@PathVariable("id") Long id) {
+        return this.orderService.getCartByOrderId(id);
+    }
+
     @PreAuthorize("hasAuthority('order:read')")
     @GetMapping("/{id}/personaldata")
     public PersonalData getPersonalsByOrderId(@PathVariable("id") Long id) {
