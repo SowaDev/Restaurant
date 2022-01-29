@@ -21,8 +21,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItems = new ArrayList<>();
 
     private double totalPrice;
@@ -31,19 +30,11 @@ public class Cart {
     @JsonIgnore
     private User user;
 
-    @OneToOne(mappedBy = "cart")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JsonIgnore
     private Order order;
 
-    public void addCartItem(CartItem cartItem){
-        cartItems.add(cartItem);
-        cartItem.setCart(this);
-    }
-
-    public void removeCartItem(CartItem cartItem){
-        cartItems.remove(cartItem);
-        cartItem.setCart(null);
-    }
 
     public double getTotalPrice() {
         int totalPrice = 0;

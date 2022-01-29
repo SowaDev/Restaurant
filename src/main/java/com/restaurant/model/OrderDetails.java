@@ -20,7 +20,6 @@ import java.util.List;
 @Table(name = "DETAILS")
 public class OrderDetails implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "DATE")
@@ -33,7 +32,8 @@ public class OrderDetails implements Serializable {
     @Column(name = "COMMENT")
     private String comment;
 
-    @OneToOne(mappedBy = "orderDetails")
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     @JsonIgnore
     private Order order;
 
