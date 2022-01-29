@@ -9,7 +9,9 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -40,10 +42,13 @@ public class PersonalData{
     @OneToOne(mappedBy = "personalData")
     private User user;
 
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
     @JsonIgnore
-    @OneToOne(mappedBy = "personalData")
-    private Order order;
+    private Set<Order> orders = new HashSet<>();
 
+    public void setOrder(Order order) {
+        orders.add(order);
+    }
 
     public PersonalData(String name, String surname, String email, String phoneNumber){
         this.name = name;

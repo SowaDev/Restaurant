@@ -7,6 +7,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -47,12 +49,13 @@ public class Address{
     @OneToOne(mappedBy = "address")
     private User user;
 
-    @OneToOne(mappedBy = "address")
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL)
     @JsonIgnore
-    private Order order;
+    private Set<Order> orders = new HashSet<>();
+
 
     public void setOrder(Order order) {
-        this.order = order;
+        orders.add(order);
     }
 
     private Address(AddressBuilder addressBuilder){
