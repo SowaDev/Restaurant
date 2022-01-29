@@ -1,11 +1,8 @@
 package com.restaurant.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restaurant.enums.DeliveryStatus;
 import com.restaurant.security.User;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
 import javax.validation.Valid;
 
@@ -23,20 +20,22 @@ public class Order {
     private Long id;
 
 //    @Valid
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "address_id")
     private Address address;
 
 //    @Valid
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "personaldata_id")
     private PersonalData personalData;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private OrderDetails orderDetails;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
