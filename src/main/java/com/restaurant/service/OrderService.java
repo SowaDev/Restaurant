@@ -37,18 +37,20 @@ public class OrderService {
             throw new EmptyCartException();
         if(user.getAddress() == null || user.getPersonalData() == null)
             throw new NoAddressOrPersonalsException();
-        Order order = new Order(user.getAddress(), user.getPersonalData(),
-                activeUser.getCart(), orderDetails, user, DeliveryStatus.ORDERED);
-//        this.orderRepository.save(order);
+        Order order = createOrder(user, activeUser.getCart(), orderDetails);
         activeUser.setCart(new Cart());
         return this.orderRepository.save(order);
     }
 
-//    public Order createNewOrder(Order order){
-//        order.getOrderDetails().setOrder(order); TODO: this is what you need to make orderdetails map ID
-//        this.orderRepository.save(order);
-//        return order;
-//    }
+    public Order createOrder(User user, Cart cart, OrderDetails orderDetails){
+        Order order = new Order(user.getAddress(), user.getPersonalData(),
+                cart, orderDetails, user, DeliveryStatus.ORDERED);
+        order.getOrderDetails().setOrder(order);
+        order.getAddress().setOrder(order);
+        order.getPersonalData().setOrder(order);
+        order.getCart().setOrder(order);
+        return order;
+    }
 
     public Order findById(Long id) {
         return this.orderRepository.findById(id).orElseThrow(() ->

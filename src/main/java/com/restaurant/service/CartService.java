@@ -1,5 +1,6 @@
 package com.restaurant.service;
 
+import com.restaurant.exception.NoSuchElementFoundException;
 import com.restaurant.model.Cart;
 import com.restaurant.model.CartItem;
 import com.restaurant.model.Dish;
@@ -18,16 +19,23 @@ public class CartService {
     }
 
     public Cart addItem(Long dishId, User activeUser) {
-        if(activeUser.getCart() == null)
-            activeUser.setCart(new Cart());
-        Cart cart = activeUser.getCart();
+        Cart cart = activeUser.getCart() == null ? setNewCart(activeUser) : activeUser.getCart();
         Dish dish = dishService.getDishById(dishId);
         CartItem item = getCartItemByDishId(dishId, cart);
-        if(item == null)
-            cart.addCartItem(new CartItem(dish, 1));
-        else
-            changeQuantity(item.getQuantity() + 1, dishId, activeUser);
+        return item == null? addCartItem(cart, dish) : changeQuantity(item.getQuantity() + 1, dishId, activeUser);
+    }
+
+    public Cart addCartItem(Cart cart, Dish dish){
+        CartItem item = new CartItem(dish, 1);
+        cart.getCartItems().add(item);
+        item.setCart(cart);
         return cart;
+    }
+
+
+    public Cart setNewCart(User user){
+        user.setCart(new Cart());
+        return user.getCart();
     }
 
     public CartItem getCartItemByDishId(Long dishId, Cart cart) {
@@ -54,6 +62,7 @@ public class CartService {
         CartItem item = getCartItemByDishId(dishId, cart);
         if(item != null)
             item.setQuantity(number);
+        else throw new NoSuchElementFoundException(dishId);
         return cart;
     }
 }

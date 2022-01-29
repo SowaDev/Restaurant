@@ -24,6 +24,7 @@ public class UserService implements UserDetailsService{
     }
 
     public Address createAddress(User user, Address address) {
+        address.setUser(user);
         user.setAddress(address);
         User updatedUser = this.userRepository.save(user);
         return updatedUser.getAddress();
@@ -53,6 +54,7 @@ public class UserService implements UserDetailsService{
     }
 
     public PersonalData createPersonalData(User user, PersonalData personalData){
+        personalData.setUser(user);
         user.setPersonalData(personalData);
         User updatedUser = this.userRepository.save(user);
         return updatedUser.getPersonalData();
