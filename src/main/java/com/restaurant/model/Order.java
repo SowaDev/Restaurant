@@ -1,5 +1,6 @@
 package com.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.restaurant.enums.DeliveryStatus;
 import com.restaurant.security.User;
 import lombok.*;
@@ -35,7 +36,8 @@ public class Order {
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private OrderDetails orderDetails;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
