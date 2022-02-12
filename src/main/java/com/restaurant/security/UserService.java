@@ -2,19 +2,21 @@ package com.restaurant.security;
 
 import com.restaurant.model.Address;
 import com.restaurant.model.PersonalData;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService implements UserDetailsService{
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,6 +25,13 @@ public class UserService implements UserDetailsService{
                 .orElseThrow(() -> new UsernameNotFoundException("No user with username: " + username));
     }
 
+    public User createNewUser(String username, String password, Role role) {
+        User user = new User(null, null, null,
+                username, passwordEncoder.encode(password), role);
+        return this.userRepository.save(user);
+    }
+
+
     public Address createAddress(User user, Address address) {
         address.setUser(user);
         user.setAddress(address);
@@ -30,7 +39,8 @@ public class UserService implements UserDetailsService{
         return updatedUser.getAddress();
     }
 
-    public Address changeAddress(User user, Address address){
+    public Address changeAddress(String username, Address address){
+        User user = (User) loadUserByUsername(username);
         Address addressToUpdate = user.getAddress();
         if(address.getApartmentNumber() != null)
             addressToUpdate.setApartmentNumber(address.getApartmentNumber());
@@ -60,7 +70,8 @@ public class UserService implements UserDetailsService{
         return updatedUser.getPersonalData();
     }
 
-    public PersonalData changePersonalData(User user, PersonalData personalData) {
+    public PersonalData changePersonalData(String username, PersonalData personalData) {
+        User user = (User) loadUserByUsername(username);
         PersonalData personalDataToUpdate = user.getPersonalData();
         if(personalData.getEmail() != null)
             personalDataToUpdate.setEmail(personalData.getEmail());
@@ -73,5 +84,15 @@ public class UserService implements UserDetailsService{
         user.setPersonalData(personalDataToUpdate);
         this.userRepository.save(user);
         return user.getPersonalData();
+    }
+
+    public Iterable<User> findAll() {
+        return this.userRepository.findAll();
+    }
+
+    public User deleteUser(String username) {
+        User user = (User) loadUserByUsername(username);
+        this.userRepository.delete(user);
+        return user;
     }
 }

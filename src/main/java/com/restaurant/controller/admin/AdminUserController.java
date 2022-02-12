@@ -1,41 +1,62 @@
 package com.restaurant.controller.admin;
 
 import com.restaurant.model.Address;
-import com.restaurant.model.Cart;
 import com.restaurant.model.PersonalData;
 import com.restaurant.security.Role;
 import com.restaurant.security.User;
-import com.restaurant.security.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.restaurant.security.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
+import static com.restaurant.security.Role.CLIENT;
+import static com.restaurant.security.Role.EMPLOYEE;
+
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RestController
 @RequestMapping("/admin/user")
 public class AdminUserController {
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
 
-    public AdminUserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public AdminUserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public Iterable<User> getUsers(){
-        return this.userRepository.findAll();
+        return this.userService.findAll();
     }
 
-    @PostMapping
-    public User createUser(){
-        Address address = new Address.AddressBuilder(
-                "Lena", "123", "31-232", "Sosnowiec").build();
-        PersonalData personalData = new PersonalData(
-                "Pioter", "Monter", "pioter@email.com", "387473287");
-        User user = new User(address, personalData, null,
-                "username", passwordEncoder.encode("password"), Role.ADMIN);
-        return this.userRepository.save(user);
+    @GetMapping("/{username}")
+    public User getUserByUsername(@PathVariable String username){
+        return (User) userService.loadUserByUsername(username);
+    }
+
+    @PostMapping("/{username}/{password}/{role}")
+    public User createUser(@PathVariable("username") String username,
+                           @PathVariable("password") String password,
+                           @PathVariable("role") String role){
+        Role userRole = switch (role){
+            case "employee" -> EMPLOYEE;
+            case "client" -> CLIENT;
+            default -> throw new IllegalStateException("No role with such name");
+        };
+        return this.userService.createNewUser(username, password, userRole);
+    }
+
+    @PutMapping("/{username}/address")
+    public Address changeUserAddress(@PathVariable String username,
+                                     @RequestBody Address address){
+        return this.userService.changeAddress(username, address);
+    }
+
+    @PutMapping("/{username}/personaldata")
+    public PersonalData changeUserPersonalData (@PathVariable String username,
+                                                @RequestBody PersonalData personalData){
+        return this.userService.changePersonalData(username, personalData);
+    }
+
+    @DeleteMapping("/{username}")
+    public User deleteUser(@PathVariable String username){
+        return this.userService.deleteUser(username);
     }
 }

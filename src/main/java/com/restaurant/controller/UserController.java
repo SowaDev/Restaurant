@@ -51,14 +51,14 @@ public class UserController {
     @PutMapping("/personaldata")
     public PersonalData changePersonalData(@AuthenticationPrincipal User activeUser,
                                            @RequestBody PersonalData personalData){
-        return this.userService.changePersonalData(activeUser, personalData);
+        return this.userService.changePersonalData(activeUser.getUsername(), personalData);
     }
 
 
     @PutMapping("/address")
     public Address changeUserAddress(@AuthenticationPrincipal User activeUser,
                                      @RequestBody Address address){
-        return this.userService.changeAddress(activeUser, address);
+        return this.userService.changeAddress(activeUser.getUsername(), address);
     }
 
 }
