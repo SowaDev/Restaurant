@@ -1,5 +1,5 @@
 # Restaurant
-This is a project that I'm currently working on. It's an API to make orders from a Restaurant.
+It's a RESTful API, which allows clients to make orders from a restaurant and owner to edit restaurant's menu.
 
 # Technologies
 - Java 17
