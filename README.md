@@ -7,3 +7,6 @@ I've made this app to get to know Spring framework and how to write APIs. My use
 # Technologies
 - Java 17
 - Spring Boot 2.5.6
+- JPA
+- Hibernate
+- Spring Security
